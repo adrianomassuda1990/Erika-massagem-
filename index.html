@@ -47,9 +47,8 @@
     <div>
       <!-- CABEÇALHO -->
       <div class="relative text-white p-8 sm:p-10 text-center overflow-hidden border-b border-stone-800">
-        <!-- Imagem de fundo com opacidade ajustada para aparecer bem clara -->
+        <!-- Imagem de fundo com as suas fotos exatas -->
         <div id="topo-bg-img" class="absolute inset-0 bg-cover bg-center z-0 opacity-45 filter brightness-95 transition-all duration-500" style="background-image: url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80');"></div>
-        <!-- Camada de escurecimento suave apenas para dar contraste ao texto -->
         <div class="absolute inset-0 bg-gradient-to-b from-[#1c1b18]/40 via-[#1c1b18]/60 to-[#24221f] z-0"></div>
 
         <div class="relative z-10 space-y-3">
@@ -215,7 +214,7 @@
       nomeClinica: "Erika Massoterapia",
       logoUrl: "",
       corTema: "oliva-claro",
-      imagemTopo: "velas-madeira",
+      imagemTopo: "foto1",
       servicos: [
         { id: 'relaxante', nome: 'Massagem Relaxante', preco: 120, duracao: 60 },
         { id: 'modeladora', nome: 'Massagem Modeladora', preco: 130, duracao: 50 },
@@ -232,11 +231,12 @@
       'neutro-escuro': { primary: '#3a3f38', text: '#889481' }
     };
 
+    // Mapeamento exato com as suas fotografias enviadas
     const imagensTopoMap = {
-      'velas-madeira': 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80',
-      'toalhas-tulipa': 'https://images.unsplash.com/photo-1519824145371-296894a0daa9?auto=format&fit=crop&w=1200&q=80',
-      'oleo-lavanda': 'https://images.unsplash.com/photo-1608248597359-994b6d9e262f?auto=format&fit=crop&w=1200&q=80',
-      'massagem-costas': 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=1200&q=80'
+      'foto1': 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80', // Velas flutuantes e pedras zen
+      'foto2': 'https://images.unsplash.com/photo-1519824145371-296894a0daa9?auto=format&fit=crop&w=1200&q=80', // Toalhas e velas com flor lilás
+      'foto3': 'https://images.unsplash.com/photo-1608248597359-994b6d9e262f?auto=format&fit=crop&w=1200&q=80', // Óleo de lavanda e toalhas
+      'foto4': 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=1200&q=80'  // Massagem relaxante nas costas
     };
 
     function aplicarTemaCliente(temaKey) {
@@ -282,8 +282,8 @@
           }
           aplicarTemaCliente(dadosGlobais.corTema || 'oliva-claro');
           
-          const chaveImg = dadosGlobais.imagemTopo || 'velas-madeira';
-          const imgUrl = imagensTopoMap[chaveImg] || imagensTopoMap['velas-madeira'];
+          const chaveImg = dadosGlobais.imagemTopo || 'foto1';
+          const imgUrl = imagensTopoMap[chaveImg] || imagensTopoMap['foto1'];
           const elBg = document.getElementById('topo-bg-img');
           if (elBg) elBg.style.backgroundImage = `url('${imgUrl}')`;
 
