@@ -280,8 +280,10 @@
           }
           aplicarTemaCliente(dadosGlobais.corTema || 'oliva-claro');
           
-          const imgUrl = imagensTopoMap[dadosGlobais.imagemTopo] || imagensTopoMap['velas-madeira'];
-          document.getElementById('topo-bg-img').style.backgroundImage = `url('${imgUrl}')`;
+          const chaveImg = dadosGlobais.imagemTopo || 'velas-madeira';
+          const imgUrl = imagensTopoMap[chaveImg] || imagensTopoMap['velas-madeira'];
+          const elBg = document.getElementById('topo-bg-img');
+          if (elBg) elBg.style.backgroundImage = `url('${imgUrl}')`;
 
           if (dadosGlobais.nomeClinica) document.getElementById('nome-clinica-cliente').textContent = dadosGlobais.nomeClinica;
           if (dadosGlobais.logoUrl) {
@@ -294,15 +296,17 @@
           }
         }
       } catch (err) {
-        console.error(err);
+        console.error("Erro ao carregar dados do Firebase:", err);
       }
       renderizarServicosCliente();
       atualizarIndicadorPassos(0);
     }
 
+    window.carregarDadosFirebase = carregarDadosFirebase;
+
     setTimeout(() => {
       if (!document.querySelector('#container-servicos-cliente input')) carregarDadosFirebase();
-    }, 3000);
+    }, 1500);
 
     function renderizarServicosCliente() {
       const servicos = dadosGlobais.servicos || [];
