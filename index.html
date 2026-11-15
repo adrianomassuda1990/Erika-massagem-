@@ -30,9 +30,9 @@
 
   <style>
     :root {
-      --theme-primary: #586f52;
-      --theme-text: #a4b494;
-      --theme-card: #313830;
+      --theme-primary: #7a8a70;
+      --theme-text: #a3b898;
+      --theme-card: #2f362c;
     }
     .theme-border { border-color: var(--theme-primary) !important; }
     .theme-bg { background-color: var(--theme-primary) !important; }
@@ -47,7 +47,7 @@
     <div>
       <!-- CABEÇALHO -->
       <div class="relative text-white p-8 sm:p-10 text-center overflow-hidden border-b border-stone-800">
-        <div class="absolute inset-0 bg-cover bg-center z-0 opacity-25 filter brightness-90" style="background-image: url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80');"></div>
+        <div id="topo-bg-img" class="absolute inset-0 bg-cover bg-center z-0 opacity-30 filter brightness-90 transition-all duration-500" style="background-image: url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80');"></div>
         <div class="absolute inset-0 bg-gradient-to-b from-[#1c1b18]/70 via-[#24221f]/90 to-[#24221f] z-0"></div>
 
         <div class="relative z-10 space-y-3">
@@ -164,7 +164,7 @@
 
       <!-- PASSO 4 -->
       <div id="step-4" class="p-8 text-center space-y-5 hidden my-auto">
-        <div class="w-16 h-16 bg-[#313830] theme-text rounded-full flex items-center justify-center mx-auto border theme-border shadow-xl">
+        <div class="w-16 h-16 bg-[#2f362c] theme-text rounded-full flex items-center justify-center mx-auto border theme-border shadow-xl">
           <i data-lucide="check-circle-2" class="w-9 h-9"></i>
         </div>
         <div class="space-y-2">
@@ -212,7 +212,8 @@
     let dadosGlobais = {
       nomeClinica: "Erika Massoterapia",
       logoUrl: "",
-      corTema: "oliva",
+      corTema: "oliva-claro",
+      imagemTopo: "velas-madeira",
       servicos: [
         { id: 'relaxante', nome: 'Massagem Relaxante', preco: 120, duracao: 60 },
         { id: 'modeladora', nome: 'Massagem Modeladora', preco: 130, duracao: 50 },
@@ -222,17 +223,24 @@
       horariosPausaPadrao: ["12:00", "12:30"]
     };
 
-    const mapasCores = {
-      oliva: { primary: "#586f52", text: "#a4b494" },
-      salvia: { primary: "#6b8e23", text: "#9acd32" },
-      dourado: { primary: "#b8860b", text: "#ffd700" },
-      zinc: { primary: "#3f3f46", text: "#d4d4d8" }
+    const mapasCoresCliente = {
+      'oliva-claro': { primary: '#7a8a70', text: '#a3b898' },
+      'oliva-escuro': { primary: '#525e4c', text: '#819379' },
+      'areia': { primary: '#a38b6d', text: '#d1b897' },
+      'neutro-escuro': { primary: '#3a3f38', text: '#889481' }
     };
 
-    function aplicarTemaVisual(corTema) {
-      const tema = mapasCores[corTema] || mapasCores.oliva;
-      document.documentElement.style.setProperty('--theme-primary', tema.primary);
-      document.documentElement.style.setProperty('--theme-text', tema.text);
+    const imagensTopoMap = {
+      'velas-madeira': 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80',
+      'toalhas-tulipa': 'https://images.unsplash.com/photo-1519824145371-296894a0daa9?auto=format&fit=crop&w=1200&q=80',
+      'oleo-lavanda': 'https://images.unsplash.com/photo-1608248597359-994b6d9e262f?auto=format&fit=crop&w=1200&q=80',
+      'massagem-costas': 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=1200&q=80'
+    };
+
+    function aplicarTemaCliente(temaKey) {
+      const t = mapasCoresCliente[temaKey] || mapasCoresCliente['oliva-claro'];
+      document.documentElement.style.setProperty('--theme-primary', t.primary);
+      document.documentElement.style.setProperty('--theme-text', t.text);
     }
 
     const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -270,7 +278,11 @@
             const data = snap.data();
             if (data) dadosGlobais = { ...dadosGlobais, ...data };
           }
-          aplicarTemaVisual(dadosGlobais.corTema || 'oliva');
+          aplicarTemaCliente(dadosGlobais.corTema || 'oliva-claro');
+          
+          const imgUrl = imagensTopoMap[dadosGlobais.imagemTopo] || imagensTopoMap['velas-madeira'];
+          document.getElementById('topo-bg-img').style.backgroundImage = `url('${imgUrl}')`;
+
           if (dadosGlobais.nomeClinica) document.getElementById('nome-clinica-cliente').textContent = dadosGlobais.nomeClinica;
           if (dadosGlobais.logoUrl) {
             const img = document.createElement('img');
@@ -306,7 +318,7 @@
         const isSel = servicoEscolhido && servicoEscolhido.id === s.id;
         const label = document.createElement('label');
         label.className = isSel
-          ? "flex items-center justify-between p-4 border-2 theme-border rounded-2xl bg-[#313830]/50 cursor-pointer shadow-sm transition-all"
+          ? "flex items-center justify-between p-4 border-2 theme-border rounded-2xl bg-[#2f362c]/50 cursor-pointer shadow-sm transition-all"
           : "flex items-center justify-between p-4 border border-stone-800 rounded-2xl cursor-pointer bg-[#1c1b18] hover:border-stone-700 transition-all";
         
         label.onclick = (e) => {
@@ -317,7 +329,7 @@
 
         label.innerHTML = `
           <div class="flex items-center gap-3.5">
-            <input type="radio" name="servico" ${isSel ? 'checked' : ''} class="w-4 h-4 accent-[#586f52]" onclick="return false;">
+            <input type="radio" name="servico" ${isSel ? 'checked' : ''} class="w-4 h-4 accent-[#7a8a70]" onclick="return false;">
             <div>
               <div class="font-serif text-stone-100 text-sm">${esc(s.nome)}</div>
               <div class="text-[11px] text-stone-400 font-light mt-0.5">⏱️ ${esc(s.duracao || 60)} min de cuidado</div>
@@ -441,7 +453,7 @@
         btn.type = 'button';
         btn.textContent = minutosParaHora(item.ini);
         btn.className = item.ini === intervaloEscolhido.ini
-          ? "p-2.5 border-2 theme-border bg-[#313830] theme-text rounded-xl text-xs font-bold shadow-sm"
+          ? "p-2.5 border-2 theme-border bg-[#2f362c] theme-text rounded-xl text-xs font-bold shadow-sm"
           : "p-2.5 border border-stone-800 bg-[#1c1b18] rounded-xl text-xs font-semibold text-stone-300 hover:border-stone-700 transition-colors";
         btn.onclick = () => {
           intervaloEscolhido = item;
