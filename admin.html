@@ -6,23 +6,32 @@
   <title>Painel Administrativo - Erika Massoterapia</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://unpkg.com/lucide@0.468.0"></script>
+  <style>
+    :root {
+      --theme-primary: #5c6b53;
+      --theme-text: #8c9a83;
+    }
+    .theme-border { border-color: var(--theme-primary) !important; }
+    .theme-bg { background-color: var(--theme-primary) !important; }
+    .theme-text { color: var(--theme-text) !important; }
+  </style>
 </head>
-<body id="body-main" class="bg-[#1c1b18] text-stone-100 min-h-screen p-4 sm:p-8 flex justify-center items-start transition-colors duration-300">
+<body id="body-main" class="bg-[#1c1b18] text-stone-100 min-h-screen p-4 sm:p-8 flex justify-center items-start">
 
   <div id="toast" class="hidden"></div>
 
   <!-- LOGIN -->
   <div id="login-screen" class="w-full max-w-sm bg-[#24221f] p-6 rounded-2xl border border-stone-800 shadow-2xl space-y-4 mt-12">
     <div class="text-center space-y-2">
-      <div class="w-12 h-12 bg-[#313830] text-[#a4b494] rounded-full flex items-center justify-center mx-auto border border-[#4a5743]">
+      <div class="w-12 h-12 bg-[#313830] theme-text rounded-full flex items-center justify-center mx-auto border theme-border">
         <i data-lucide="flower-2" class="w-6 h-6"></i>
       </div>
       <h2 class="text-lg font-bold text-stone-100">Erika Massoterapia</h2>
       <p class="text-xs text-stone-400">Acesso ao painel administrativo</p>
     </div>
-    <input type="text" id="input-email" placeholder="Usuário (ex: erika)" autocomplete="username" autocapitalize="none" class="w-full p-3 bg-[#1c1b18] border border-stone-800 rounded-xl text-sm text-stone-100 focus:outline-none focus:border-[#a4b494]">
-    <input type="password" id="input-senha" placeholder="Senha" autocomplete="current-password" class="w-full p-3 bg-[#1c1b18] border border-stone-800 rounded-xl text-sm text-stone-100 focus:outline-none focus:border-[#a4b494]">
-    <button onclick="entrar()" class="w-full py-3 bg-[#586f52] hover:bg-[#688260] text-white font-bold text-sm rounded-xl transition-all shadow-lg">Entrar no Painel</button>
+    <input type="text" id="input-email" placeholder="Usuário (ex: erika)" autocomplete="username" autocapitalize="none" class="w-full p-3 bg-[#1c1b18] border border-stone-800 rounded-xl text-sm text-stone-100 focus:outline-none focus:border-[#8c9a83]">
+    <input type="password" id="input-senha" placeholder="Senha" autocomplete="current-password" class="w-full p-3 bg-[#1c1b18] border border-stone-800 rounded-xl text-sm text-stone-100 focus:outline-none focus:border-[#8c9a83]">
+    <button onclick="entrar()" class="w-full py-3 theme-bg hover:opacity-90 text-white font-bold text-sm rounded-xl transition-all shadow-lg">Entrar no Painel</button>
   </div>
 
   <!-- PAINEL -->
@@ -32,7 +41,7 @@
       <div>
         <div class="flex items-center gap-2">
           <h1 id="titulo-topo-admin" class="text-2xl font-bold text-stone-100 tracking-tight">Erika Massoterapia</h1>
-          <span class="bg-[#313830] text-[#a4b494] border border-[#4a5743] text-xs px-2.5 py-1 rounded-full font-bold">Gestão</span>
+          <span class="bg-[#313830] theme-text border theme-border text-xs px-2.5 py-1 rounded-full font-bold">Gestão</span>
         </div>
         <p class="text-xs text-stone-400 mt-1">Conectado como <span id="email-logado"></span></p>
       </div>
@@ -44,7 +53,7 @@
 
     <!-- IDENTIDADE, LOGÓTIPO & PALETA DE CORES -->
     <div class="bg-[#24221f] p-6 rounded-2xl border border-stone-800 space-y-4">
-      <h2 class="text-base font-bold text-stone-200 flex items-center gap-2 border-b border-stone-800 pb-3"><i data-lucide="image" class="w-5 h-5 text-[#a4b494]"></i> Nome, Logótipo & Paleta de Cores</h2>
+      <h2 class="text-base font-bold text-stone-200 flex items-center gap-2 border-b border-stone-800 pb-3"><i data-lucide="image" class="w-5 h-5 theme-text"></i> Nome, Logótipo & Paleta de Cores</h2>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div class="space-y-2">
           <label class="block text-xs font-bold uppercase text-stone-400">Nome da Clínica</label>
@@ -52,15 +61,12 @@
         </div>
         <div class="space-y-2">
           <label class="block text-xs font-bold uppercase text-stone-400">Logótipo</label>
-          <input type="file" id="input-arquivo-logo" accept="image/*" onchange="processarLogo(this)" class="w-full p-2 bg-[#1c1b18] border border-stone-800 rounded-lg text-xs text-stone-400 file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-bold file:bg-[#586f52] file:text-white">
+          <input type="file" id="input-arquivo-logo" accept="image/*" onchange="processarLogo(this)" class="w-full p-2 bg-[#1c1b18] border border-stone-800 rounded-lg text-xs text-stone-400 file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-bold file:theme-bg file:text-white">
         </div>
         <div class="space-y-2">
-          <label class="block text-xs font-bold uppercase text-stone-400">Paleta de Cores (Tema)</label>
+          <label class="block text-xs font-bold uppercase text-stone-400">Paleta de Cores (Pinterest)</label>
           <select id="input-cor-tema" class="w-full p-2.5 bg-[#1c1b18] border border-stone-800 rounded-lg text-sm text-stone-100 focus:outline-none">
-            <option value="oliva">🌿 Verde Oliva & Bege (Natural)</option>
-            <option value="salvia">🍃 Sálvia Suave</option>
-            <option value="dourado">✨ Luxo / Âmbar</option>
-            <option value="zinc">🖤 Minimalista Escuro</option>
+            <option value="pinterest">🌿 Verde Oliva, Areia & Neutros</option>
           </select>
         </div>
       </div>
@@ -68,13 +74,13 @@
         <span class="text-xs text-stone-400">Logótipo carregado:</span>
         <img id="preview-logo-img" src="" alt="" class="w-12 h-12 rounded-full object-cover border border-stone-700">
       </div>
-      <button onclick="salvarIdentidade()" class="w-full py-3 bg-[#586f52] hover:bg-[#688260] text-stone-100 font-bold text-sm rounded-xl transition-all shadow-lg">Guardar Identidade & Cores</button>
+      <button onclick="salvarIdentidade()" class="w-full py-3 theme-bg hover:opacity-90 text-stone-100 font-bold text-sm rounded-xl transition-all shadow-lg">Guardar Identidade & Cores</button>
     </div>
 
     <!-- AGENDA DO DIA & ANAMNESE -->
     <div class="bg-[#24221f] p-6 rounded-2xl border border-stone-800 space-y-4">
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-stone-800 pb-3">
-        <h2 class="text-base font-bold text-stone-200 flex items-center gap-2"><i data-lucide="calendar" class="w-5 h-5 text-[#a4b494]"></i> Agenda & Ficha de Anamnese</h2>
+        <h2 class="text-base font-bold text-stone-200 flex items-center gap-2"><i data-lucide="calendar" class="w-5 h-5 theme-text"></i> Agenda & Ficha de Anamnese</h2>
         <button onclick="copiarResumoDia()" class="px-4 py-2 bg-stone-800 hover:bg-stone-700 text-white font-bold text-xs rounded-lg flex items-center gap-1.5 shadow-md"><i data-lucide="copy" class="w-4 h-4"></i> Copiar Lista do Dia</button>
       </div>
       <div class="bg-[#1c1b18] p-4 rounded-xl border border-stone-800">
@@ -88,7 +94,7 @@
 
     <!-- AGENDAMENTO MANUAL -->
     <div class="bg-[#24221f] p-6 rounded-2xl border border-stone-800 space-y-4">
-      <h2 class="text-base font-bold text-stone-200 flex items-center gap-2 border-b border-stone-800 pb-3"><i data-lucide="user-plus" class="w-5 h-5 text-[#a4b494]"></i> Criar Agendamento Manual</h2>
+      <h2 class="text-base font-bold text-stone-200 flex items-center gap-2 border-b border-stone-800 pb-3"><i data-lucide="user-plus" class="w-5 h-5 theme-text"></i> Criar Agendamento Manual</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-[#1c1b18] p-4 rounded-xl border border-stone-800">
         <div>
           <label class="block text-xs font-bold uppercase text-stone-400 mb-1">Nome do Cliente</label>
@@ -111,17 +117,17 @@
           <input type="text" id="manual-whats" maxlength="25" placeholder="Ex: (19) 99999-9999" class="w-full p-2.5 bg-[#24221f] border border-stone-800 rounded-lg text-sm text-stone-100 focus:outline-none">
         </div>
       </div>
-      <button onclick="criarAgendamentoManual()" class="w-full py-3 bg-[#586f52] hover:bg-[#688260] text-white font-bold text-sm rounded-xl shadow-lg transition-all">Registar Agendamento Manual</button>
+      <button onclick="criarAgendamentoManual()" class="w-full py-3 theme-bg hover:opacity-90 text-white font-bold text-sm rounded-xl shadow-lg transition-all">Registar Agendamento Manual</button>
     </div>
 
     <!-- SERVIÇOS & MASSAGENS -->
     <div class="bg-[#24221f] p-6 rounded-2xl border border-stone-800 space-y-4">
-      <h2 class="text-base font-bold text-stone-200 flex items-center gap-2 border-b border-stone-800 pb-3"><i data-lucide="sparkles" class="w-5 h-5 text-[#a4b494]"></i> Massagens, Valores (R$) & Duração (min)</h2>
+      <h2 class="text-base font-bold text-stone-200 flex items-center gap-2 border-b border-stone-800 pb-3"><i data-lucide="sparkles" class="w-5 h-5 theme-text"></i> Massagens, Valores (R$) & Duração (min)</h2>
       <div class="grid grid-cols-1 sm:grid-cols-4 gap-2 bg-[#1c1b18] p-3 rounded-xl border border-stone-800">
         <input type="text" id="novo-servico-nome" placeholder="Nome da Massagem" class="p-2.5 bg-[#24221f] border border-stone-800 rounded-lg text-sm text-stone-100 focus:outline-none">
         <input type="number" id="novo-servico-preco" min="0" placeholder="Valor (R$)" class="p-2.5 bg-[#24221f] border border-stone-800 rounded-lg text-sm text-stone-100 font-bold focus:outline-none">
         <input type="number" id="novo-servico-duracao" min="10" step="5" placeholder="Minutos" class="p-2.5 bg-[#24221f] border border-stone-800 rounded-lg text-sm text-stone-100 focus:outline-none">
-        <button onclick="adicionarServico()" class="py-2.5 bg-[#586f52] hover:bg-[#688260] text-white font-bold text-xs rounded-lg flex items-center justify-center gap-1 transition-all"><i data-lucide="plus" class="w-4 h-4"></i> Adicionar</button>
+        <button onclick="adicionarServico()" class="py-2.5 theme-bg hover:opacity-90 text-white font-bold text-xs rounded-lg flex items-center justify-center gap-1 transition-all"><i data-lucide="plus" class="w-4 h-4"></i> Adicionar</button>
       </div>
       <div class="space-y-2" id="lista-servicos-admin"></div>
       <button onclick="salvarServicos()" class="w-full py-3 bg-stone-800 hover:bg-stone-700 text-stone-100 font-bold text-sm rounded-xl">Guardar Massagens</button>
@@ -129,7 +135,7 @@
 
     <!-- DIAS E PAUSAS -->
     <div class="bg-[#24221f] p-6 rounded-2xl border border-stone-800 space-y-4">
-      <h2 class="text-base font-bold text-stone-200 flex items-center gap-2 border-b border-stone-800 pb-3"><i data-lucide="calendar-off" class="w-5 h-5 text-[#a4b494]"></i> Dias de Atendimento & Pausas</h2>
+      <h2 class="text-base font-bold text-stone-200 flex items-center gap-2 border-b border-stone-800 pb-3"><i data-lucide="calendar-off" class="w-5 h-5 theme-text"></i> Dias de Atendimento & Pausas</h2>
       <div class="space-y-2">
         <label class="block text-xs font-bold uppercase text-stone-400">Dias da Semana</label>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5" id="grid-dias-semana"></div>
@@ -172,7 +178,7 @@
     let dadosGerais = {
       nomeClinica: "Erika Massoterapia",
       logoUrl: "",
-      corTema: "oliva",
+      corTema: "pinterest",
       servicos: [
         { id: 'relaxante', nome: 'Massagem Relaxante', preco: 120, duracao: 60 },
         { id: 'modeladora', nome: 'Massagem Modeladora', preco: 130, duracao: 50 },
@@ -199,7 +205,7 @@
     function toast(msg, erro = false) {
       const t = $('toast');
       t.textContent = msg;
-      t.className = `fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-xl text-sm font-bold shadow-xl ${erro ? 'bg-red-600' : 'bg-[#586f52]'} text-white`;
+      t.className = `fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-xl text-sm font-bold shadow-xl ${erro ? 'bg-red-600' : 'theme-bg'} text-white`;
       clearTimeout(timerToast);
       timerToast = setTimeout(() => t.classList.add('hidden'), 3500);
     }
@@ -265,7 +271,7 @@
       if (!$('manual-data').value) $('manual-data').value = hoje;
 
       $('input-nome-clinica').value = dadosGerais.nomeClinica || "Erika Massoterapia";
-      $('input-cor-tema').value = dadosGerais.corTema || "oliva";
+      $('input-cor-tema').value = dadosGerais.corTema || "pinterest";
       $('titulo-topo-admin').textContent = dadosGerais.nomeClinica;
       if (dadosGerais.logoUrl) {
         $('preview-logo-img').src = dadosGerais.logoUrl;
@@ -364,7 +370,7 @@
         const anam = ag.anamnese || {};
         const anamneseHtml = `
           <div class="mt-3 pt-3 border-t border-stone-800 text-xs text-stone-300 space-y-1 bg-[#1c1b18] p-3 rounded-lg">
-            <div class="font-bold text-[#a4b494] mb-1 flex items-center gap-1.5"><i data-lucide="file-text" class="w-3.5 h-3.5"></i> Ficha de Anamnese:</div>
+            <div class="font-bold theme-text mb-1 flex items-center gap-1.5"><i data-lucide="file-text" class="w-3.5 h-3.5"></i> Ficha de Anamnese:</div>
             <div><b>Dores/Queixas:</b> ${esc(anam.dores || 'Nenhuma informada')}</div>
             <div><b>Problemas de Saúde / Cirurgias:</b> ${esc(anam.saude || 'Nenhum')}</div>
             <div><b>Alergias a Óleos/Cremes:</b> ${esc(anam.alergias || 'Não')}</div>
@@ -381,7 +387,7 @@
               <div class="text-xs text-stone-400">${esc(ag.servico)} | R$ ${esc(ag.preco)} | Tel: ${esc(ag.whatsapp)}</div>
             </div>
             <div class="flex items-center gap-2 w-full sm:w-auto">
-              ${temNum ? `<a href="${esc(link)}" target="_blank" rel="noopener" class="px-3 py-2 bg-[#586f52] hover:bg-[#688260] text-white rounded-lg text-xs font-bold flex items-center gap-1 justify-center flex-1 sm:flex-initial"><i data-lucide="message-circle" class="w-3.5 h-3.5"></i> WhatsApp</a>` : ''}
+              ${temNum ? `<a href="${esc(link)}" target="_blank" rel="noopener" class="px-3 py-2 theme-bg hover:opacity-90 text-white rounded-lg text-xs font-bold flex items-center gap-1 justify-center flex-1 sm:flex-initial"><i data-lucide="message-circle" class="w-3.5 h-3.5"></i> WhatsApp</a>` : ''}
               <button data-acao="copiar" data-id="${esc(ag.id)}" class="px-3 py-2 bg-stone-800 hover:bg-stone-700 text-white rounded-lg text-xs font-bold flex items-center gap-1 justify-center flex-1 sm:flex-initial"><i data-lucide="copy" class="w-3.5 h-3.5"></i> Msg</button>
               <button data-acao="cancelar" data-id="${esc(ag.id)}" class="px-3 py-2 bg-red-600/90 hover:bg-red-500 text-white rounded-lg text-xs font-bold flex items-center gap-1 justify-center flex-1 sm:flex-initial"><i data-lucide="x-circle" class="w-3.5 h-3.5"></i> Cancelar</button>
             </div>
