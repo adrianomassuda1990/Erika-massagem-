@@ -9,7 +9,7 @@
   <style>
     :root {
       --theme-primary: #7a8a70;
-      --theme-text: #9ab090;
+      --theme-text: #a3b898;
     }
     .theme-border { border-color: var(--theme-primary) !important; }
     .theme-bg { background-color: var(--theme-primary) !important; }
@@ -61,10 +61,10 @@
       </div>
     </div>
 
-    <!-- IDENTIDADE, LOGÓTIPO & PALETA DE CORES -->
+    <!-- IDENTIDADE, LOGÓTIPO, IMAGEM DE FUNDO & CORES -->
     <div class="bg-[#24221f] p-6 rounded-2xl border border-stone-800 space-y-4">
-      <h2 class="text-base font-bold text-stone-200 flex items-center gap-2 border-b border-stone-800 pb-3"><i data-lucide="image" class="w-5 h-5 theme-text"></i> Nome, Logótipo & Paleta de Cores</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <h2 class="text-base font-bold text-stone-200 flex items-center gap-2 border-b border-stone-800 pb-3"><i data-lucide="image" class="w-5 h-5 theme-text"></i> Identidade Visual & Aparência</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div class="space-y-2">
           <label class="block text-xs font-bold uppercase text-stone-400">Nome da Clínica</label>
           <input type="text" id="input-nome-clinica" maxlength="60" class="w-full p-2.5 bg-[#1c1b18] border border-stone-800 rounded-lg text-sm text-stone-100 focus:outline-none">
@@ -74,7 +74,16 @@
           <input type="file" id="input-arquivo-logo" accept="image/*" onchange="processarLogo(this)" class="w-full p-2 bg-[#1c1b18] border border-stone-800 rounded-lg text-xs text-stone-300">
         </div>
         <div class="space-y-2">
-          <label class="block text-xs font-bold uppercase text-stone-400">Paleta de Cores (Pinterest)</label>
+          <label class="block text-xs font-bold uppercase text-stone-400">Imagem de Fundo (Topo)</label>
+          <select id="input-imagem-topo" class="w-full p-2.5 bg-[#1c1b18] border border-stone-800 rounded-lg text-sm text-stone-100 focus:outline-none">
+            <option value="velas-madeira">🕯️ Velas Flutuantes e Pedras Zen</option>
+            <option value="toalhas-tulipa">🌸 Toalhas e Velas com Flor</option>
+            <option value="oleo-lavanda">🌿 Óleo de Lavanda e Velas</option>
+            <option value="massagem-costas">💆‍♀️ Massagem Relaxante nas Costas</option>
+          </select>
+        </div>
+        <div class="space-y-2">
+          <label class="block text-xs font-bold uppercase text-stone-400">Paleta de Cores</label>
           <select id="input-cor-tema" class="w-full p-2.5 bg-[#1c1b18] border border-stone-800 rounded-lg text-sm text-stone-100 focus:outline-none">
             <option value="oliva-claro">🌿 Verde Sálvia & Areia</option>
             <option value="oliva-escuro">🌲 Verde Oliva Profundo</option>
@@ -87,7 +96,7 @@
         <span class="text-xs text-stone-400">Logótipo carregado:</span>
         <img id="preview-logo-img" src="" alt="" class="w-12 h-12 rounded-full object-cover border border-stone-700">
       </div>
-      <button onclick="salvarIdentidade()" class="w-full py-3 theme-bg hover:opacity-90 text-stone-100 font-bold text-sm rounded-xl transition-all shadow-lg">Guardar Identidade & Cores</button>
+      <button onclick="salvarIdentidade()" class="w-full py-3 theme-bg hover:opacity-90 text-stone-100 font-bold text-sm rounded-xl transition-all shadow-lg">Guardar Identidade & Aparência</button>
     </div>
 
     <!-- AGENDA DO DIA & ANAMNESE -->
@@ -205,6 +214,7 @@
       nomeClinica: "Erika Massoterapia",
       logoUrl: "",
       corTema: "oliva-claro",
+      imagemTopo: "velas-madeira",
       servicos: [
         { id: 'relaxante', nome: 'Massagem Relaxante', preco: 120, duracao: 60 },
         { id: 'modeladora', nome: 'Massagem Modeladora', preco: 130, duracao: 50 },
@@ -300,6 +310,7 @@
 
       $('input-nome-clinica').value = dadosGerais.nomeClinica || "Erika Massoterapia";
       $('input-cor-tema').value = dadosGerais.corTema || "oliva-claro";
+      $('input-imagem-topo').value = dadosGerais.imagemTopo || "velas-madeira";
       $('titulo-topo-admin').textContent = dadosGerais.nomeClinica;
       if (dadosGerais.logoUrl) {
         $('preview-logo-img').src = dadosGerais.logoUrl;
@@ -345,6 +356,7 @@
     async function salvarIdentidade() {
       dadosGerais.nomeClinica = $('input-nome-clinica').value.trim() || "Erika Massoterapia";
       dadosGerais.corTema = $('input-cor-tema').value;
+      dadosGerais.imagemTopo = $('input-imagem-topo').value;
       aplicarTemaAdmin(dadosGerais.corTema);
       $('titulo-topo-admin').textContent = dadosGerais.nomeClinica;
       await salvarConfig("Identidade atualizada!");
