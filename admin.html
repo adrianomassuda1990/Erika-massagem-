@@ -8,12 +8,22 @@
   <script src="https://unpkg.com/lucide@0.468.0"></script>
   <style>
     :root {
-      --theme-primary: #5c6b53;
-      --theme-text: #8c9a83;
+      --theme-primary: #7a8a70;
+      --theme-text: #9ab090;
     }
     .theme-border { border-color: var(--theme-primary) !important; }
     .theme-bg { background-color: var(--theme-primary) !important; }
     .theme-text { color: var(--theme-text) !important; }
+    input[type="file"]::file-selector-button {
+      background-color: var(--theme-primary);
+      color: #ffffff;
+      border: 0;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-right: 10px;
+    }
   </style>
 </head>
 <body id="body-main" class="bg-[#1c1b18] text-stone-100 min-h-screen p-4 sm:p-8 flex justify-center items-start">
@@ -23,14 +33,14 @@
   <!-- LOGIN -->
   <div id="login-screen" class="w-full max-w-sm bg-[#24221f] p-6 rounded-2xl border border-stone-800 shadow-2xl space-y-4 mt-12">
     <div class="text-center space-y-2">
-      <div class="w-12 h-12 bg-[#313830] theme-text rounded-full flex items-center justify-center mx-auto border theme-border">
+      <div class="w-12 h-12 bg-[#2f362c] theme-text rounded-full flex items-center justify-center mx-auto border theme-border">
         <i data-lucide="flower-2" class="w-6 h-6"></i>
       </div>
       <h2 class="text-lg font-bold text-stone-100">Erika Massoterapia</h2>
       <p class="text-xs text-stone-400">Acesso ao painel administrativo</p>
     </div>
-    <input type="text" id="input-email" placeholder="Usuário (ex: erika)" autocomplete="username" autocapitalize="none" class="w-full p-3 bg-[#1c1b18] border border-stone-800 rounded-xl text-sm text-stone-100 focus:outline-none focus:border-[#8c9a83]">
-    <input type="password" id="input-senha" placeholder="Senha" autocomplete="current-password" class="w-full p-3 bg-[#1c1b18] border border-stone-800 rounded-xl text-sm text-stone-100 focus:outline-none focus:border-[#8c9a83]">
+    <input type="text" id="input-email" placeholder="Usuário (ex: erika)" autocomplete="username" autocapitalize="none" class="w-full p-3 bg-[#1c1b18] border border-stone-800 rounded-xl text-sm text-stone-100 focus:outline-none focus:border-[#9ab090]">
+    <input type="password" id="input-senha" placeholder="Senha" autocomplete="current-password" class="w-full p-3 bg-[#1c1b18] border border-stone-800 rounded-xl text-sm text-stone-100 focus:outline-none focus:border-[#9ab090]">
     <button onclick="entrar()" class="w-full py-3 theme-bg hover:opacity-90 text-white font-bold text-sm rounded-xl transition-all shadow-lg">Entrar no Painel</button>
   </div>
 
@@ -41,7 +51,7 @@
       <div>
         <div class="flex items-center gap-2">
           <h1 id="titulo-topo-admin" class="text-2xl font-bold text-stone-100 tracking-tight">Erika Massoterapia</h1>
-          <span class="bg-[#313830] theme-text border theme-border text-xs px-2.5 py-1 rounded-full font-bold">Gestão</span>
+          <span class="bg-[#2f362c] theme-text border theme-border text-xs px-2.5 py-1 rounded-full font-bold">Gestão</span>
         </div>
         <p class="text-xs text-stone-400 mt-1">Conectado como <span id="email-logado"></span></p>
       </div>
@@ -61,12 +71,15 @@
         </div>
         <div class="space-y-2">
           <label class="block text-xs font-bold uppercase text-stone-400">Logótipo</label>
-          <input type="file" id="input-arquivo-logo" accept="image/*" onchange="processarLogo(this)" class="w-full p-2 bg-[#1c1b18] border border-stone-800 rounded-lg text-xs text-stone-400 file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-bold file:theme-bg file:text-white">
+          <input type="file" id="input-arquivo-logo" accept="image/*" onchange="processarLogo(this)" class="w-full p-2 bg-[#1c1b18] border border-stone-800 rounded-lg text-xs text-stone-300">
         </div>
         <div class="space-y-2">
           <label class="block text-xs font-bold uppercase text-stone-400">Paleta de Cores (Pinterest)</label>
           <select id="input-cor-tema" class="w-full p-2.5 bg-[#1c1b18] border border-stone-800 rounded-lg text-sm text-stone-100 focus:outline-none">
-            <option value="pinterest">🌿 Verde Oliva, Areia & Neutros</option>
+            <option value="oliva-claro">🌿 Verde Sálvia & Areia</option>
+            <option value="oliva-escuro">🌲 Verde Oliva Profundo</option>
+            <option value="areia">🏜️ Bege Areia & Taupe</option>
+            <option value="neutro-escuro">🖤 Preto Neutro & Oliva</option>
           </select>
         </div>
       </div>
@@ -170,6 +183,19 @@
     const CFG_REF = doc(db, "configuracoes", "erika_massoterapia");
     const DOMINIO_LOGIN = "@erika.example.com";
 
+    const mapasCoresAdmin = {
+      'oliva-claro': { primary: '#7a8a70', text: '#a3b898' },
+      'oliva-escuro': { primary: '#525e4c', text: '#819379' },
+      'areia': { primary: '#a38b6d', text: '#d1b897' },
+      'neutro-escuro': { primary: '#3a3f38', text: '#889481' }
+    };
+
+    function aplicarTemaAdmin(temaKey) {
+      const t = mapasCoresAdmin[temaKey] || mapasCoresAdmin['oliva-claro'];
+      document.documentElement.style.setProperty('--theme-primary', t.primary);
+      document.documentElement.style.setProperty('--theme-text', t.text);
+    }
+
     const ABRE_MIN = 8 * 60, FECHA_MIN = 20 * 60, DURACAO_PAUSA = 30;
     const diasSemana = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
     const horariosPausa = [];
@@ -178,7 +204,7 @@
     let dadosGerais = {
       nomeClinica: "Erika Massoterapia",
       logoUrl: "",
-      corTema: "pinterest",
+      corTema: "oliva-claro",
       servicos: [
         { id: 'relaxante', nome: 'Massagem Relaxante', preco: 120, duracao: 60 },
         { id: 'modeladora', nome: 'Massagem Modeladora', preco: 130, duracao: 50 },
@@ -265,13 +291,15 @@
         }
       } catch (e) { console.error(e); }
 
+      aplicarTemaAdmin(dadosGerais.corTema || 'oliva-claro');
+
       const hoje = hojeLocal();
       if (!$('filtro-data-agenda').value) $('filtro-data-agenda').value = hoje;
       $('manual-data').min = hoje;
       if (!$('manual-data').value) $('manual-data').value = hoje;
 
       $('input-nome-clinica').value = dadosGerais.nomeClinica || "Erika Massoterapia";
-      $('input-cor-tema').value = dadosGerais.corTema || "pinterest";
+      $('input-cor-tema').value = dadosGerais.corTema || "oliva-claro";
       $('titulo-topo-admin').textContent = dadosGerais.nomeClinica;
       if (dadosGerais.logoUrl) {
         $('preview-logo-img').src = dadosGerais.logoUrl;
@@ -317,6 +345,7 @@
     async function salvarIdentidade() {
       dadosGerais.nomeClinica = $('input-nome-clinica').value.trim() || "Erika Massoterapia";
       dadosGerais.corTema = $('input-cor-tema').value;
+      aplicarTemaAdmin(dadosGerais.corTema);
       $('titulo-topo-admin').textContent = dadosGerais.nomeClinica;
       await salvarConfig("Identidade atualizada!");
     }
