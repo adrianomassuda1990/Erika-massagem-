@@ -75,12 +75,7 @@
         </div>
         <div class="space-y-2">
           <label class="block text-xs font-bold uppercase text-stone-400">Foto de Fundo (Topo)</label>
-          <select id="input-imagem-topo" class="w-full p-2.5 bg-[#1c1b18] border border-stone-800 rounded-lg text-sm text-stone-100 focus:outline-none">
-            <option value="foto1">🕯️ Velas Flutuantes & Pedras Zen</option>
-            <option value="foto2">🌸 Toalhas & Flor Lilás</option>
-            <option value="foto3">🌿 Óleo de Lavanda & Velas</option>
-            <option value="foto4">💆‍♀️ Massagem nas Costas</option>
-          </select>
+          <input type="file" id="input-arquivo-topo" accept="image/*" onchange="processarTopo(this)" class="w-full p-2 bg-[#1c1b18] border border-stone-800 rounded-lg text-xs text-stone-300">
         </div>
         <div class="space-y-2">
           <label class="block text-xs font-bold uppercase text-stone-400">Paleta de Cores</label>
@@ -92,9 +87,15 @@
           </select>
         </div>
       </div>
-      <div id="preview-logo-container" class="hidden items-center gap-3 pt-2">
-        <span class="text-xs text-stone-400">Logótipo carregado:</span>
-        <img id="preview-logo-img" src="" alt="" class="w-12 h-12 rounded-full object-cover border border-stone-700">
+      <div class="flex flex-wrap gap-4 pt-2">
+        <div id="preview-logo-container" class="hidden items-center gap-3">
+          <span class="text-xs text-stone-400">Logótipo:</span>
+          <img id="preview-logo-img" src="" alt="" class="w-12 h-12 rounded-full object-cover border border-stone-700">
+        </div>
+        <div id="preview-topo-container" class="hidden items-center gap-3">
+          <span class="text-xs text-stone-400">Fundo atual:</span>
+          <img id="preview-topo-img" src="" alt="" class="w-20 h-12 rounded-lg object-cover border border-stone-700">
+        </div>
       </div>
       <button onclick="salvarIdentidade()" class="w-full py-3 theme-bg hover:opacity-90 text-stone-100 font-bold text-sm rounded-xl transition-all shadow-lg">Guardar Identidade & Aparência</button>
     </div>
@@ -213,8 +214,8 @@
     let dadosGerais = {
       nomeClinica: "Erika Massoterapia",
       logoUrl: "",
+      topoUrl: "",
       corTema: "oliva-claro",
-      imagemTopo: "foto1",
       servicos: [
         { id: 'relaxante', nome: 'Massagem Relaxante', preco: 120, duracao: 60 },
         { id: 'modeladora', nome: 'Massagem Modeladora', preco: 130, duracao: 50 },
@@ -310,12 +311,17 @@
 
       $('input-nome-clinica').value = dadosGerais.nomeClinica || "Erika Massoterapia";
       $('input-cor-tema').value = dadosGerais.corTema || "oliva-claro";
-      $('input-imagem-topo').value = dadosGerais.imagemTopo || "foto1";
       $('titulo-topo-admin').textContent = dadosGerais.nomeClinica;
+
       if (dadosGerais.logoUrl) {
         $('preview-logo-img').src = dadosGerais.logoUrl;
         $('preview-logo-container').classList.remove('hidden');
         $('preview-logo-container').classList.add('flex');
+      }
+      if (dadosGerais.topoUrl) {
+        $('preview-topo-img').src = dadosGerais.topoUrl;
+        $('preview-topo-container').classList.remove('hidden');
+        $('preview-topo-container').classList.add('flex');
       }
 
       carregarCamposPainel();
@@ -353,10 +359,32 @@
       img.src = url;
     }
 
+    function processarTopo(input) {
+      const file = input.files[0];
+      if (!file) return;
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        const maxWidth = 1000, maxHeight = 600;
+        let w = img.width, h = img.height;
+        if (w > maxWidth) { h = Math.round((h * maxWidth) / w); w = maxWidth; }
+        if (h > maxHeight) { w = Math.round((w * maxHeight) / h); h = maxHeight; }
+        const c = document.createElement('canvas');
+        c.width = w; c.height = h;
+        c.getContext('2d').drawImage(img, 0, 0, w, h);
+        dadosGerais.topoUrl = c.toDataURL('image/jpeg', 0.82);
+        URL.revokeObjectURL(url);
+        $('preview-topo-img').src = dadosGerais.topoUrl;
+        $('preview-topo-container').classList.remove('hidden');
+        $('preview-topo-container').classList.add('flex');
+      };
+      img.onerror = () => toast("Imagem inválida.", true);
+      img.src = url;
+    }
+
     async function salvarIdentidade() {
       dadosGerais.nomeClinica = $('input-nome-clinica').value.trim() || "Erika Massoterapia";
       dadosGerais.corTema = $('input-cor-tema').value;
-      dadosGerais.imagemTopo = $('input-imagem-topo').value;
       aplicarTemaAdmin(dadosGerais.corTema);
       $('titulo-topo-admin').textContent = dadosGerais.nomeClinica;
       await salvarConfig("Identidade atualizada!");
@@ -683,7 +711,7 @@
     Object.assign(window, {
       entrar, sair, redefinirSenha, renderizarAgendaDoDia, copiarResumoDia,
       atualizarHorariosManual, criarAgendamentoManual, adicionarServico, removerServico, salvarServicos,
-      salvarDiasPausas, processarLogo, salvarIdentidade
+      salvarDiasPausas, processarLogo, processarTopo, salvarIdentidade
     });
 
     icones();
