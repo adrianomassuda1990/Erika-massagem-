@@ -29,51 +29,51 @@
   </script>
 
   <style>
-    .theme-border { border-color: #586f52 !important; }
-    .theme-bg { background-color: #586f52 !important; }
-    .theme-text { color: #a4b494 !important; }
+    :root {
+      --theme-primary: #586f52;
+      --theme-text: #a4b494;
+      --theme-card: #313830;
+    }
+    .theme-border { border-color: var(--theme-primary) !important; }
+    .theme-bg { background-color: var(--theme-primary) !important; }
+    .theme-text { color: var(--theme-text) !important; }
     #next-btn:disabled { opacity: .5; cursor: not-allowed; }
   </style>
 </head>
 <body class="bg-[#1c1b18] min-h-screen text-stone-100 font-sans antialiased flex flex-col items-center justify-start p-0 sm:p-6">
 
-  <!-- WRAPPER DO APP (Estilo Cartão Flutuante Sofisticado) -->
   <div class="w-full max-w-lg bg-[#24221f] min-h-screen sm:min-h-[850px] sm:rounded-3xl shadow-2xl flex flex-col justify-between overflow-hidden relative border border-stone-800/80">
 
     <div>
-      <!-- CABEÇALHO COM FOTO DE ILUMINAÇÃO NATURAL QUENTE (BANNER HERO) -->
+      <!-- CABEÇALHO -->
       <div class="relative text-white p-8 sm:p-10 text-center overflow-hidden border-b border-stone-800">
-        <!-- Imagem de fundo aconchegante (spa/natureza) com overlay suave -->
         <div class="absolute inset-0 bg-cover bg-center z-0 opacity-25 filter brightness-90" style="background-image: url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80');"></div>
         <div class="absolute inset-0 bg-gradient-to-b from-[#1c1b18]/70 via-[#24221f]/90 to-[#24221f] z-0"></div>
 
-        <!-- Conteúdo do Topo -->
         <div class="relative z-10 space-y-3">
-          <div class="w-16 h-16 rounded-full border-2 border-[#586f52] shadow-xl mx-auto overflow-hidden bg-[#1c1b18] flex items-center justify-center">
-            <i data-lucide="flower-2" class="w-8 h-8 text-[#a4b494]"></i>
+          <div id="container-logo" class="w-16 h-16 rounded-full border-2 theme-border shadow-xl mx-auto overflow-hidden bg-[#1c1b18] flex items-center justify-center">
+            <i data-lucide="flower-2" class="w-8 h-8 theme-text"></i>
           </div>
           <div>
             <h1 id="nome-clinica-cliente" class="text-2xl sm:text-3xl font-serif tracking-wide text-stone-100 font-normal">Erika Massoterapia</h1>
             <p class="text-xs text-stone-300 flex items-center justify-center gap-1.5 mt-1 font-light tracking-wider uppercase">
-              <i data-lucide="sparkles" class="w-3.5 h-3.5 text-[#a4b494]"></i> Respire fundo. Desconecte. Renove-se.
+              <i data-lucide="sparkles" class="w-3.5 h-3.5 theme-text"></i> Respire fundo. Desconecte. Renove-se.
             </p>
           </div>
 
-          <!-- BOTÃO EM DESTAQUE NA DOBRA PRINCIPAL -->
           <div class="pt-2">
-            <a href="#agendamento-section" class="inline-flex items-center gap-2 px-6 py-3 bg-[#586f52] hover:bg-[#688260] text-white font-medium text-xs tracking-widest uppercase rounded-xl shadow-lg transition-all duration-300">
+            <a href="#agendamento-section" class="inline-flex items-center gap-2 px-6 py-3 theme-bg hover:opacity-90 text-white font-medium text-xs tracking-widest uppercase rounded-xl shadow-lg transition-all duration-300">
               <i data-lucide="calendar" class="w-4 h-4"></i> Agendar Horário
             </a>
           </div>
         </div>
       </div>
 
-      <!-- ÂNCORA DE AGENDAMENTO -->
       <div id="agendamento-section"></div>
 
-      <!-- INDICADOR DE PASSOS MINIMALISTA -->
+      <!-- INDICADOR DE PASSOS -->
       <div id="steps-indicator-wrapper" class="flex border-b border-stone-800 bg-[#1c1b18]/60 px-4 py-3 text-[11px] font-medium text-stone-400 justify-between items-center">
-        <button type="button" onclick="voltarPara(0)" id="step-0-indicator" class="text-stone-300 font-semibold flex items-center gap-1">1. Serviço</button>
+        <button type="button" onclick="voltarPara(0)" id="step-0-indicator" class="theme-text font-semibold flex items-center gap-1">1. Serviço</button>
         <span class="text-stone-700">/</span>
         <button type="button" onclick="voltarPara(1)" id="step-1-indicator" class="text-stone-500 flex items-center gap-1">2. Horário</button>
         <span class="text-stone-700">/</span>
@@ -82,7 +82,7 @@
         <button type="button" onclick="voltarPara(3)" id="step-3-indicator" class="text-stone-500 flex items-center gap-1">4. Confirmação</button>
       </div>
 
-      <!-- PASSO 0: ESCOLHA DA MASSAGEM (CARDS COM BORDAS SUAVES) -->
+      <!-- PASSO 0 -->
       <div id="step-0" class="p-6 space-y-4">
         <div>
           <h2 class="text-sm font-serif tracking-wide text-stone-200 mb-1">Escolha seu Ritual de Cuidado</h2>
@@ -93,11 +93,11 @@
         </div>
       </div>
 
-      <!-- PASSO 1: DATA E HORÁRIO -->
+      <!-- PASSO 1 -->
       <div id="step-1" class="p-6 space-y-5 hidden">
         <div>
           <label class="block text-xs font-serif text-stone-300 mb-2">Selecione a Data Desejada</label>
-          <input type="date" id="data-agendamento" onchange="carregarHorariosCliente()" class="w-full p-3.5 bg-[#1c1b18] border border-stone-800 rounded-2xl text-sm text-[#a4b494] font-medium focus:outline-none focus:border-[#586f52] transition-colors">
+          <input type="date" id="data-agendamento" onchange="carregarHorariosCliente()" class="w-full p-3.5 bg-[#1c1b18] border border-stone-800 rounded-2xl text-sm theme-text font-medium focus:outline-none focus:border-stone-600 transition-colors">
         </div>
 
         <div id="alerta-dia-fechado" class="hidden p-4 bg-stone-900 border border-stone-700 rounded-2xl text-center space-y-1">
@@ -108,35 +108,35 @@
         <div id="wrapper-horarios" class="space-y-2">
           <div class="flex justify-between items-center">
             <label class="block text-xs font-serif text-stone-300">Horários Disponíveis</label>
-            <span class="text-[11px] text-[#a4b494] font-medium" id="info-duracao-servico"></span>
+            <span class="text-[11px] theme-text font-medium" id="info-duracao-servico"></span>
           </div>
           <div class="grid grid-cols-3 sm:grid-cols-4 gap-2.5 max-h-60 overflow-y-auto pr-1" id="horarios-grid-cliente"></div>
         </div>
       </div>
 
-      <!-- PASSO 2: FICHA DE ANAMNESE (ESTÉTICA MINIMALISTA & ACOLHEDORA) -->
+      <!-- PASSO 2: ANAMNESE -->
       <div id="step-2" class="p-6 space-y-4 hidden">
         <div class="p-4 bg-[#1c1b18] border border-stone-800 rounded-2xl text-xs text-stone-300 space-y-1.5 shadow-sm">
-          <div class="font-serif text-stone-200 text-sm flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4 text-[#a4b494]"></i> Ficha de Anamnese Prévia</div>
-          <p class="text-[11px] text-stone-400 font-light leading-relaxed">Informações confidenciais para garantir que sua experiência seja inteiramente segura e personalizada.</p>
+          <div class="font-serif text-stone-200 text-sm flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4 theme-text"></i> Ficha de Anamnese Prévia</div>
+          <p class="text-[11px] text-stone-400 font-light leading-relaxed">Informações confidenciais para garantir que sua experiência seja inteiramente segura.</p>
         </div>
 
         <div class="space-y-3.5">
           <div>
             <label class="block text-[11px] font-medium uppercase text-stone-400 mb-1">Sentindo alguma dor ou tensão específica?</label>
-            <input type="text" id="anamnese-dores" placeholder="Ex: Lombar, pescoço, ombros..." class="w-full p-3 bg-[#1c1b18] border border-stone-800 rounded-xl text-xs text-stone-100 focus:outline-none focus:border-[#586f52]">
+            <input type="text" id="anamnese-dores" placeholder="Ex: Lombar, pescoço, ombros..." class="w-full p-3 bg-[#1c1b18] border border-stone-800 rounded-xl text-xs text-stone-100 focus:outline-none">
           </div>
           <div>
             <label class="block text-[11px] font-medium uppercase text-stone-400 mb-1">Possui algum problema de saúde ou cirurgia recente?</label>
-            <input type="text" id="anamnese-saude" placeholder="Ex: Hérnia, pressão alta (ou 'Nenhum')" class="w-full p-3 bg-[#1c1b18] border border-stone-800 rounded-xl text-xs text-stone-100 focus:outline-none focus:border-[#586f52]">
+            <input type="text" id="anamnese-saude" placeholder="Ex: Hérnia, pressão alta (ou 'Nenhum')" class="w-full p-3 bg-[#1c1b18] border border-stone-800 rounded-xl text-xs text-stone-100 focus:outline-none">
           </div>
           <div>
             <label class="block text-[11px] font-medium uppercase text-stone-400 mb-1">Possui alergia a óleos essenciais ou cremes?</label>
-            <input type="text" id="anamnese-alergias" placeholder="Ex: Não, ou informe qual" class="w-full p-3 bg-[#1c1b18] border border-stone-800 rounded-xl text-xs text-stone-100 focus:outline-none focus:border-[#586f52]">
+            <input type="text" id="anamnese-alergias" placeholder="Ex: Não, ou informe qual" class="w-full p-3 bg-[#1c1b18] border border-stone-800 rounded-xl text-xs text-stone-100 focus:outline-none">
           </div>
           <div>
             <label class="block text-[11px] font-medium uppercase text-stone-400 mb-1">É gestante ou lactante?</label>
-            <select id="anamnese-gestante" class="w-full p-3 bg-[#1c1b18] border border-stone-800 rounded-xl text-xs text-stone-100 focus:outline-none focus:border-[#586f52]">
+            <select id="anamnese-gestante" class="w-full p-3 bg-[#1c1b18] border border-stone-800 rounded-xl text-xs text-stone-100 focus:outline-none">
               <option value="Não">Não</option>
               <option value="Sim">Sim</option>
             </select>
@@ -144,7 +144,7 @@
         </div>
       </div>
 
-      <!-- PASSO 3: SEUS DADOS -->
+      <!-- PASSO 3 -->
       <div id="step-3" class="p-6 space-y-4 hidden">
         <div class="p-4 bg-[#1c1b18] border border-stone-800 rounded-2xl text-xs text-stone-300 space-y-1">
           <div class="font-serif text-stone-200 text-sm mb-1">Resumo do Atendimento</div>
@@ -153,18 +153,18 @@
         <div class="space-y-3">
           <div>
             <label class="block text-[11px] font-medium uppercase text-stone-400 mb-1">Seu Nome Completo *</label>
-            <input type="text" id="nome-cliente" maxlength="80" placeholder="Ex: Ana Souza" class="w-full p-3.5 bg-[#1c1b18] border border-stone-800 rounded-xl text-sm text-stone-100 focus:outline-none focus:border-[#586f52]">
+            <input type="text" id="nome-cliente" maxlength="80" placeholder="Ex: Ana Souza" class="w-full p-3.5 bg-[#1c1b18] border border-stone-800 rounded-xl text-sm text-stone-100 focus:outline-none">
           </div>
           <div>
             <label class="block text-[11px] font-medium uppercase text-stone-400 mb-1">WhatsApp / Telefone *</label>
-            <input type="tel" id="whats-cliente" maxlength="25" placeholder="Ex: (19) 99999-9999" class="w-full p-3.5 bg-[#1c1b18] border border-stone-800 rounded-xl text-sm text-stone-100 focus:outline-none focus:border-[#586f52]">
+            <input type="tel" id="whats-cliente" maxlength="25" placeholder="Ex: (19) 99999-9999" class="w-full p-3.5 bg-[#1c1b18] border border-stone-800 rounded-xl text-sm text-stone-100 focus:outline-none">
           </div>
         </div>
       </div>
 
-      <!-- PASSO 4: SUCESSO -->
+      <!-- PASSO 4 -->
       <div id="step-4" class="p-8 text-center space-y-5 hidden my-auto">
-        <div class="w-16 h-16 bg-[#313830] text-[#a4b494] rounded-full flex items-center justify-center mx-auto border border-[#4a5743] shadow-xl">
+        <div class="w-16 h-16 bg-[#313830] theme-text rounded-full flex items-center justify-center mx-auto border theme-border shadow-xl">
           <i data-lucide="check-circle-2" class="w-9 h-9"></i>
         </div>
         <div class="space-y-2">
@@ -179,9 +179,9 @@
       </div>
     </div>
 
-    <!-- RODAPÉ & BOTÕES DE AÇÃO -->
+    <!-- RODAPÉ -->
     <div id="footer-actions" class="p-5 bg-[#24221f] border-t border-stone-800 flex flex-col gap-3">
-      <button id="next-btn" onclick="nextStep()" class="w-full py-4 bg-[#586f52] hover:bg-[#688260] text-white font-medium text-xs tracking-widest uppercase rounded-2xl shadow-xl transition-all flex items-center justify-center gap-2">
+      <button id="next-btn" onclick="nextStep()" class="w-full py-4 theme-bg hover:opacity-90 text-white font-medium text-xs tracking-widest uppercase rounded-2xl shadow-xl transition-all flex items-center justify-center gap-2">
         <span>Avançar para Data & Horários</span>
         <i data-lucide="arrow-right" class="w-4 h-4"></i>
       </button>
@@ -211,6 +211,8 @@
 
     let dadosGlobais = {
       nomeClinica: "Erika Massoterapia",
+      logoUrl: "",
+      corTema: "oliva",
       servicos: [
         { id: 'relaxante', nome: 'Massagem Relaxante', preco: 120, duracao: 60 },
         { id: 'modeladora', nome: 'Massagem Modeladora', preco: 130, duracao: 50 },
@@ -220,13 +222,26 @@
       horariosPausaPadrao: ["12:00", "12:30"]
     };
 
+    const mapasCores = {
+      oliva: { primary: "#586f52", text: "#a4b494" },
+      salvia: { primary: "#6b8e23", text: "#9acd32" },
+      dourado: { primary: "#b8860b", text: "#ffd700" },
+      zinc: { primary: "#3f3f46", text: "#d4d4d8" }
+    };
+
+    function aplicarTemaVisual(corTema) {
+      const tema = mapasCores[corTema] || mapasCores.oliva;
+      document.documentElement.style.setProperty('--theme-primary', tema.primary);
+      document.documentElement.style.setProperty('--theme-text', tema.text);
+    }
+
     const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
     function atualizarIndicadorPassos(passoAtivo) {
       for (let i = 0; i <= 3; i++) {
         const btn = document.getElementById(`step-${i}-indicator`);
         if (btn) {
-          btn.className = (i === passoAtivo ? "text-[#a4b494] font-bold" : "text-stone-500") + " flex items-center gap-1 transition-all";
+          btn.className = (i === passoAtivo ? "theme-text font-bold" : "text-stone-500") + " flex items-center gap-1 transition-all";
         }
       }
     }
@@ -253,9 +268,18 @@
           const snap = await getDoc(doc(window.dbFirestore, "configuracoes", "erika_massoterapia"));
           if (snap.exists()) {
             const data = snap.data();
-            if (data && data.servicos) dadosGlobais = { ...dadosGlobais, ...data };
+            if (data) dadosGlobais = { ...dadosGlobais, ...data };
           }
+          aplicarTemaVisual(dadosGlobais.corTema || 'oliva');
           if (dadosGlobais.nomeClinica) document.getElementById('nome-clinica-cliente').textContent = dadosGlobais.nomeClinica;
+          if (dadosGlobais.logoUrl) {
+            const img = document.createElement('img');
+            img.src = dadosGlobais.logoUrl;
+            img.className = 'w-full h-full object-cover';
+            const c = document.getElementById('container-logo');
+            c.innerHTML = '';
+            c.appendChild(img);
+          }
         }
       } catch (err) {
         console.error(err);
@@ -282,7 +306,7 @@
         const isSel = servicoEscolhido && servicoEscolhido.id === s.id;
         const label = document.createElement('label');
         label.className = isSel
-          ? "flex items-center justify-between p-4 border-2 border-[#586f52] rounded-2xl bg-[#313830]/50 cursor-pointer shadow-sm transition-all"
+          ? "flex items-center justify-between p-4 border-2 theme-border rounded-2xl bg-[#313830]/50 cursor-pointer shadow-sm transition-all"
           : "flex items-center justify-between p-4 border border-stone-800 rounded-2xl cursor-pointer bg-[#1c1b18] hover:border-stone-700 transition-all";
         
         label.onclick = (e) => {
@@ -299,7 +323,7 @@
               <div class="text-[11px] text-stone-400 font-light mt-0.5">⏱️ ${esc(s.duracao || 60)} min de cuidado</div>
             </div>
           </div>
-          <span class="font-semibold text-sm ${isSel ? 'text-[#a4b494]' : 'text-stone-400'}">R$ ${esc(s.preco)}</span>
+          <span class="font-semibold text-sm ${isSel ? 'theme-text' : 'text-stone-400'}">R$ ${esc(s.preco)}</span>
         `;
         container.appendChild(label);
       });
@@ -417,7 +441,7 @@
         btn.type = 'button';
         btn.textContent = minutosParaHora(item.ini);
         btn.className = item.ini === intervaloEscolhido.ini
-          ? "p-2.5 border-2 border-[#586f52] bg-[#313830] text-[#a4b494] rounded-xl text-xs font-bold shadow-sm"
+          ? "p-2.5 border-2 theme-border bg-[#313830] theme-text rounded-xl text-xs font-bold shadow-sm"
           : "p-2.5 border border-stone-800 bg-[#1c1b18] rounded-xl text-xs font-semibold text-stone-300 hover:border-stone-700 transition-colors";
         btn.onclick = () => {
           intervaloEscolhido = item;
@@ -486,7 +510,7 @@
           await reservarHorario(nome, whats, anamnese);
 
           const [, m, d] = inputData.value.split('-');
-          const texto = `🌿 *Novo Agendamento - Erika Massoterapia*\n\n👤 *Cliente:* ${nome}\n💆‍♀️ *Serviço:* ${servicoEscolhido.nome}\n📅 *Data:* ${d}/${m} às ${horarioEscolhido}\n💰 *Valor:* R$ ${servicoEscolhido.preco}\n\n📋 *Anamnese:*\n• Dores: ${anamnese.dores}\n• Saúde: ${anamnese.saude}\n• Alergias: ${anamnese.alergias}\n• Gestante: ${anamnese.gestante}`;
+          const texto = `🌿 *Novo Agendamento - ${dadosGlobais.nomeClinica || 'Erika Massoterapia'}*\n\n👤 *Cliente:* ${nome}\n💆‍♀️ *Serviço:* ${servicoEscolhido.nome}\n📅 *Data:* ${d}/${m} às ${horarioEscolhido}\n💰 *Valor:* R$ ${servicoEscolhido.preco}\n\n📋 *Anamnese:*\n• Dores: ${anamnese.dores}\n• Saúde: ${anamnese.saude}\n• Alergias: ${anamnese.alergias}\n• Gestante: ${anamnese.gestante}`;
 
           try { await navigator.clipboard.writeText(texto); } catch (_) {}
 
@@ -497,7 +521,7 @@
 
           const linkWpp = `https://api.whatsapp.com/send?phone=5519999999999&text=${encodeURIComponent(texto)}`;
           document.getElementById('container-botoes-manuais').innerHTML = `
-            <a href="${linkWpp}" target="_blank" rel="noopener" class="w-full py-4 bg-[#586f52] hover:bg-[#688260] text-white font-medium text-xs tracking-wider uppercase rounded-2xl flex items-center justify-center gap-2 shadow-xl transition-all">
+            <a href="${linkWpp}" target="_blank" rel="noopener" class="w-full py-4 theme-bg hover:opacity-90 text-white font-medium text-xs tracking-wider uppercase rounded-2xl flex items-center justify-center gap-2 shadow-xl transition-all">
               <i data-lucide="message-circle" class="w-4 h-4"></i> Enviar Confirmação no WhatsApp da Erika
             </a>`;
           lucide.createIcons();
