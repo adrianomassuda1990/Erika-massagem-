@@ -42,13 +42,21 @@
       </div>
     </div>
 
-    <!-- CONFIGURAÇÃO DE TEMA (PALETA DE CORES) -->
+    <!-- IDENTIDADE, LOGÓTIPO & PALETA DE CORES -->
     <div class="bg-[#24221f] p-6 rounded-2xl border border-stone-800 space-y-4">
-      <h2 class="text-base font-bold text-stone-200 flex items-center gap-2 border-b border-stone-800 pb-3"><i data-lucide="palette" class="w-5 h-5 text-[#a4b494]"></i> Paleta de Cores do Site</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div>
-          <label class="block text-xs font-bold uppercase text-stone-400 mb-1">Selecionar Estilo de Cores</label>
-          <select id="input-cor-tema" onchange="mudarTemaVisual(this.value)" class="w-full p-2.5 bg-[#1c1b18] border border-stone-800 rounded-lg text-sm text-stone-100 focus:outline-none">
+      <h2 class="text-base font-bold text-stone-200 flex items-center gap-2 border-b border-stone-800 pb-3"><i data-lucide="image" class="w-5 h-5 text-[#a4b494]"></i> Nome, Logótipo & Paleta de Cores</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="space-y-2">
+          <label class="block text-xs font-bold uppercase text-stone-400">Nome da Clínica</label>
+          <input type="text" id="input-nome-clinica" maxlength="60" class="w-full p-2.5 bg-[#1c1b18] border border-stone-800 rounded-lg text-sm text-stone-100 focus:outline-none">
+        </div>
+        <div class="space-y-2">
+          <label class="block text-xs font-bold uppercase text-stone-400">Logótipo</label>
+          <input type="file" id="input-arquivo-logo" accept="image/*" onchange="processarLogo(this)" class="w-full p-2 bg-[#1c1b18] border border-stone-800 rounded-lg text-xs text-stone-400 file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-bold file:bg-[#586f52] file:text-white">
+        </div>
+        <div class="space-y-2">
+          <label class="block text-xs font-bold uppercase text-stone-400">Paleta de Cores (Tema)</label>
+          <select id="input-cor-tema" class="w-full p-2.5 bg-[#1c1b18] border border-stone-800 rounded-lg text-sm text-stone-100 focus:outline-none">
             <option value="oliva">🌿 Verde Oliva & Bege (Natural)</option>
             <option value="salvia">🍃 Sálvia Suave</option>
             <option value="dourado">✨ Luxo / Âmbar</option>
@@ -56,6 +64,11 @@
           </select>
         </div>
       </div>
+      <div id="preview-logo-container" class="hidden items-center gap-3 pt-2">
+        <span class="text-xs text-stone-400">Logótipo carregado:</span>
+        <img id="preview-logo-img" src="" alt="" class="w-12 h-12 rounded-full object-cover border border-stone-700">
+      </div>
+      <button onclick="salvarIdentidade()" class="w-full py-3 bg-[#586f52] hover:bg-[#688260] text-stone-100 font-bold text-sm rounded-xl transition-all shadow-lg">Guardar Identidade & Cores</button>
     </div>
 
     <!-- AGENDA DO DIA & ANAMNESE -->
@@ -158,6 +171,7 @@
 
     let dadosGerais = {
       nomeClinica: "Erika Massoterapia",
+      logoUrl: "",
       corTema: "oliva",
       servicos: [
         { id: 'relaxante', nome: 'Massagem Relaxante', preco: 120, duracao: 60 },
@@ -250,7 +264,15 @@
       $('manual-data').min = hoje;
       if (!$('manual-data').value) $('manual-data').value = hoje;
 
+      $('input-nome-clinica').value = dadosGerais.nomeClinica || "Erika Massoterapia";
       $('input-cor-tema').value = dadosGerais.corTema || "oliva";
+      $('titulo-topo-admin').textContent = dadosGerais.nomeClinica;
+      if (dadosGerais.logoUrl) {
+        $('preview-logo-img').src = dadosGerais.logoUrl;
+        $('preview-logo-container').classList.remove('hidden');
+        $('preview-logo-container').classList.add('flex');
+      }
+
       carregarCamposPainel();
     }
 
@@ -266,9 +288,31 @@
       }
     }
 
-    function mudarTemaVisual(tema) {
-      dadosGerais.corTema = tema;
-      salvarConfig("Paleta de cores atualizada!");
+    function processarLogo(input) {
+      const file = input.files[0];
+      if (!file) return;
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        const t = 256, c = document.createElement('canvas');
+        c.width = c.height = t;
+        const s = Math.min(img.width, img.height);
+        c.getContext('2d').drawImage(img, (img.width - s) / 2, (img.height - s) / 2, s, s, 0, 0, t, t);
+        dadosGerais.logoUrl = c.toDataURL('image/jpeg', 0.85);
+        URL.revokeObjectURL(url);
+        $('preview-logo-img').src = dadosGerais.logoUrl;
+        $('preview-logo-container').classList.remove('hidden');
+        $('preview-logo-container').classList.add('flex');
+      };
+      img.onerror = () => toast("Imagem inválida.", true);
+      img.src = url;
+    }
+
+    async function salvarIdentidade() {
+      dadosGerais.nomeClinica = $('input-nome-clinica').value.trim() || "Erika Massoterapia";
+      dadosGerais.corTema = $('input-cor-tema').value;
+      $('titulo-topo-admin').textContent = dadosGerais.nomeClinica;
+      await salvarConfig("Identidade atualizada!");
     }
 
     function carregarCamposPainel() {
@@ -385,7 +429,7 @@
       if (listaDia.length === 0) { toast("Nada para copiar.", true); return; }
       const [y, m, d] = $('filtro-data-agenda').value.split('-');
       const linhas = listaDia.map(ag => `${ag.horario} - ${ag.cliente} (${ag.servico})`.trim());
-      copiarTexto(`🌿 Agenda Erika Massoterapia - ${d}/${m}/${y}\n\n${linhas.join('\n')}`);
+      copiarTexto(`🌿 Agenda ${dadosGerais.nomeClinica} - ${d}/${m}/${y}\n\n${linhas.join('\n')}`);
     }
 
     function calcularInicios(duracao, data, ocupados, pausasHHMM) {
@@ -592,7 +636,7 @@
     Object.assign(window, {
       entrar, sair, redefinirSenha, renderizarAgendaDoDia, copiarResumoDia,
       atualizarHorariosManual, criarAgendamentoManual, adicionarServico, removerServico, salvarServicos,
-      salvarDiasPausas, mudarTemaVisual
+      salvarDiasPausas, processarLogo, salvarIdentidade
     });
 
     icones();
