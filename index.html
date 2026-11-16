@@ -47,8 +47,8 @@
     <div>
       <!-- CABEÇALHO -->
       <div class="relative text-white p-8 sm:p-10 text-center overflow-hidden border-b border-stone-800">
-        <!-- Imagem de fundo dinâmica enviada pela Erika -->
-        <div id="topo-bg-img" class="absolute inset-0 bg-cover bg-center z-0 opacity-45 filter brightness-95 transition-all duration-500" style="background-image: url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80');"></div>
+        <!-- Imagem de fundo dinâmica enviada pela Erika (inicia oculta para evitar piscar) -->
+        <div id="topo-bg-img" class="absolute inset-0 bg-cover bg-center z-0 opacity-0 filter brightness-95 transition-all duration-500" style="background-image: url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80');"></div>
         <div class="absolute inset-0 bg-gradient-to-b from-[#1c1b18]/40 via-[#1c1b18]/60 to-[#24221f] z-0"></div>
 
         <div class="relative z-10 space-y-3">
@@ -200,7 +200,7 @@
     lucide.createIcons();
 
     const ABRE_MIN = 8 * 60;
-    const FECHA_MIN = 20 * 60;
+    const FECHA_MIN = 23 * 60; // Atualizado para 23 horas
     const DURACAO_PAUSA = 30;
 
     let currentStep = 0;
@@ -274,9 +274,14 @@
           }
           aplicarTemaCliente(dadosGlobais.corTema || 'oliva-claro');
           
-          if (dadosGlobais.topoUrl) {
-            const elBg = document.getElementById('topo-bg-img');
-            if (elBg) elBg.style.backgroundImage = `url('${dadosGlobais.topoUrl}')`;
+          const elBg = document.getElementById('topo-bg-img');
+          if (elBg) {
+            if (dadosGlobais.topoUrl) {
+              elBg.style.backgroundImage = `url('${dadosGlobais.topoUrl}')`;
+            }
+            // Torna visível suavemente após carregar para evitar o "piscar" da imagem padrão
+            elBg.classList.remove('opacity-0');
+            elBg.classList.add('opacity-45');
           }
 
           if (dadosGlobais.nomeClinica) document.getElementById('nome-clinica-cliente').textContent = dadosGlobais.nomeClinica;
@@ -291,6 +296,11 @@
         }
       } catch (err) {
         console.error("Erro ao carregar dados do Firebase:", err);
+        const elBg = document.getElementById('topo-bg-img');
+        if (elBg) {
+          elBg.classList.remove('opacity-0');
+          elBg.classList.add('opacity-45');
+        }
       }
       renderizarServicosCliente();
       atualizarIndicadorPassos(0);
@@ -520,7 +530,7 @@
           await reservarHorario(nome, whats, anamnese);
 
           const [, m, d] = inputData.value.split('-');
-          const texto = `🌿 *Novo Agendamento - ${dadosGlobais.nomeClinica || 'Erika Massoterapia'}*\n\n👤 *Cliente:* ${nome}\n💆‍♀️ *Serviço:* ${servicoEscolhido.nome}\n📅 *Data:* ${d}/${m} às ${horarioEscolhido}\n💰 *Valor:* R$ ${servico_preco = servicoEscolhido.preco}\n\n📋 *Anamnese:*\n• Dores: ${anamnese.dores}\n• Saúde: ${anamnese.saude}\n• Alergias: ${anamnese.alergias}\n• Gestante: ${anamnese.gestante}`;
+          const texto = `🌿 *Novo Agendamento - ${dadosGlobais.nomeClinica || 'Erika Massoterapia'}*\n\n👤 *Cliente:* ${nome}\n💆‍♀️ *Serviço:* ${servicoEscolhido.nome}\n📅 *Data:* ${d}/${m} às ${horarioEscolhido}\n💰 *Valor:* R$ ${servicoEscolhido.preco}\n\n📋 *Anamnese:*\n• Dores: ${anamnese.dores}\n• Saúde: ${anamnese.saude}\n• Alergias: ${anamnese.alergias}\n• Gestante: ${anamnese.gestante}`;
 
           try { await navigator.clipboard.writeText(texto); } catch (_) {}
 
