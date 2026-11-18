@@ -212,6 +212,7 @@
 
     let dadosGlobais = {
       nomeClinica: "Erika Massoterapia",
+      whatsappClinica: "5519999999999",
       logoUrl: "",
       topoUrl: "",
       corTema: "oliva-claro",
@@ -279,7 +280,6 @@
             if (dadosGlobais.topoUrl) {
               elBg.style.backgroundImage = `url('${dadosGlobais.topoUrl}')`;
             }
-            // Torna visível suavemente após carregar para evitar o "piscar" da imagem padrão
             elBg.classList.remove('opacity-0');
             elBg.classList.add('opacity-45');
           }
@@ -539,7 +539,8 @@
           document.getElementById('footer-actions').classList.add('hidden');
           document.getElementById('step-4').classList.remove('hidden');
 
-          const linkWpp = `https://api.whatsapp.com/send?phone=5519999999999&text=${encodeURIComponent(texto)}`;
+          const wppDestino = dadosGlobais.whatsappClinica || "5519999999999";
+          const linkWpp = `https://api.whatsapp.com/send?phone=${wppDestino}&text=${encodeURIComponent(texto)}`;
           document.getElementById('container-botoes-manuais').innerHTML = `
             <a href="${linkWpp}" target="_blank" rel="noopener" class="w-full py-4 theme-bg hover:opacity-90 text-white font-medium text-xs tracking-wider uppercase rounded-2xl flex items-center justify-center gap-2 shadow-xl transition-all">
               <i data-lucide="message-circle" class="w-4 h-4"></i> Enviar Confirmação no WhatsApp da Erika
