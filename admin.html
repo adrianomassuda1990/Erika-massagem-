@@ -61,21 +61,17 @@
       </div>
     </div>
 
-    <!-- IDENTIDADE, LOGÓTIPO, IMAGEM DE FUNDO & CORES -->
+    <!-- IDENTIDADE, LOGÓTIPO, IMAGEM DE FUNDO & WHATSAPP -->
     <div class="bg-[#24221f] p-6 rounded-2xl border border-stone-800 space-y-4">
-      <h2 class="text-base font-bold text-stone-200 flex items-center gap-2 border-b border-stone-800 pb-3"><i data-lucide="image" class="w-5 h-5 theme-text"></i> Identidade Visual & Aparência</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <h2 class="text-base font-bold text-stone-200 flex items-center gap-2 border-b border-stone-800 pb-3"><i data-lucide="image" class="w-5 h-5 theme-text"></i> Identidade Visual, WhatsApp & Aparência</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <div class="space-y-2">
           <label class="block text-xs font-bold uppercase text-stone-400">Nome da Clínica</label>
           <input type="text" id="input-nome-clinica" maxlength="60" class="w-full p-2.5 bg-[#1c1b18] border border-stone-800 rounded-lg text-sm text-stone-100 focus:outline-none">
         </div>
         <div class="space-y-2">
-          <label class="block text-xs font-bold uppercase text-stone-400">Logótipo</label>
-          <input type="file" id="input-arquivo-logo" accept="image/*" onchange="processarLogo(this)" class="w-full p-2 bg-[#1c1b18] border border-stone-800 rounded-lg text-xs text-stone-300">
-        </div>
-        <div class="space-y-2">
-          <label class="block text-xs font-bold uppercase text-stone-400">Foto de Fundo (Topo)</label>
-          <input type="file" id="input-arquivo-topo" accept="image/*" onchange="processarTopo(this)" class="w-full p-2 bg-[#1c1b18] border border-stone-800 rounded-lg text-xs text-stone-300">
+          <label class="block text-xs font-bold uppercase text-stone-400">WhatsApp da Clínica (com DDD)</label>
+          <input type="text" id="input-whatsapp-clinica" maxlength="25" placeholder="Ex: 19999999999" class="w-full p-2.5 bg-[#1c1b18] border border-stone-800 rounded-lg text-sm text-stone-100 focus:outline-none">
         </div>
         <div class="space-y-2">
           <label class="block text-xs font-bold uppercase text-stone-400">Paleta de Cores</label>
@@ -85,6 +81,14 @@
             <option value="areia">🏜️ Bege Areia & Taupe</option>
             <option value="neutro-escuro">🖤 Preto Neutro & Oliva</option>
           </select>
+        </div>
+        <div class="space-y-2">
+          <label class="block text-xs font-bold uppercase text-stone-400">Logótipo</label>
+          <input type="file" id="input-arquivo-logo" accept="image/*" onchange="processarLogo(this)" class="w-full p-2 bg-[#1c1b18] border border-stone-800 rounded-lg text-xs text-stone-300">
+        </div>
+        <div class="space-y-2 sm:col-span-2">
+          <label class="block text-xs font-bold uppercase text-stone-400">Foto de Fundo (Topo)</label>
+          <input type="file" id="input-arquivo-topo" accept="image/*" onchange="processarTopo(this)" class="w-full p-2 bg-[#1c1b18] border border-stone-800 rounded-lg text-xs text-stone-300">
         </div>
       </div>
       <div class="flex flex-wrap gap-4 pt-2">
@@ -213,6 +217,7 @@
 
     let dadosGerais = {
       nomeClinica: "Erika Massoterapia",
+      whatsappClinica: "5519999999999",
       logoUrl: "",
       topoUrl: "",
       corTema: "oliva-claro",
@@ -310,6 +315,7 @@
       if (!$('manual-data').value) $('manual-data').value = hoje;
 
       $('input-nome-clinica').value = dadosGerais.nomeClinica || "Erika Massoterapia";
+      $('input-whatsapp-clinica').value = dadosGerais.whatsappClinica || "5519999999999";
       $('input-cor-tema').value = dadosGerais.corTema || "oliva-claro";
       $('titulo-topo-admin').textContent = dadosGerais.nomeClinica;
 
@@ -384,10 +390,11 @@
 
     async function salvarIdentidade() {
       dadosGerais.nomeClinica = $('input-nome-clinica').value.trim() || "Erika Massoterapia";
+      dadosGerais.whatsappClinica = $('input-whatsapp-clinica').value.trim().replace(/\D/g, '') || "5519999999999";
       dadosGerais.corTema = $('input-cor-tema').value;
       aplicarTemaAdmin(dadosGerais.corTema);
       $('titulo-topo-admin').textContent = dadosGerais.nomeClinica;
-      await salvarConfig("Identidade atualizada!");
+      await salvarConfig("Identidade e WhatsApp atualizados!");
     }
 
     function carregarCamposPainel() {
